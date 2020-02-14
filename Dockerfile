@@ -1,4 +1,4 @@
-FROM hyperf/hyperf:7.3-alpine-v3.9-cli
+FROM hyperf/hyperf:7.4-alpine-v3.10-cli
 
 RUN apk update \
     && apk add --no-cache \
