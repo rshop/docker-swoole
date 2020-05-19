@@ -3,6 +3,7 @@ FROM hyperf/hyperf:7.4-alpine-v3.10-cli
 RUN apk update \
     && apk add --no-cache \
         php7-bz2 \
+        php7-ftp \
         php7-intl \
         php7-imap \
         php7-opcache \
