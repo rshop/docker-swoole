@@ -1,6 +1,6 @@
 FROM rshop/php:7.3-mssql
 
-ENV SWOOLE_VERSION v4.6.5
+ENV SWOOLE_VERSION v4.6.6
 
 RUN apk update \
     && apk add --no-cache \
@@ -23,7 +23,6 @@ RUN apk update \
         && make -s -j$(nproc) && make install \
     ) \
     && echo "extension=swoole.so" > /etc/php7/conf.d/50_swoole.ini \
-    && rm /etc/php7/conf.d/xdebug.ini \
     && apk del .build-deps \
     && apk del --purge *-dev \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/local/bin/php*
