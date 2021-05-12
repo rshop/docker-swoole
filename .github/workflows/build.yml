@@ -3,7 +3,7 @@ name: Build image and push to Docker Hub
 on:
   push:
     branches:
-      - '7.3'
+      - '7.4'
 
 jobs:
   docker:
@@ -20,4 +20,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: rshop/swoole:7.3,rshop/swoole:latest
+          tags: rshop/swoole:7.4
