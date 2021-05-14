@@ -1,6 +1,6 @@
 FROM rshop/php:7.3-mssql
 
-ENV SWOOLE_VERSION v4.6.6
+ENV SWOOLE_VERSION v4.4.25
 
 RUN apk update \
     && apk add --no-cache \
