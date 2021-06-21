@@ -41,13 +41,13 @@ jobs:
         with:
           platforms: ${{ secrets.DOCKER_PLATFORMS }}
           push: true
-          tags: rshop/php-apache:${{ env.BRANCH }}
+          tags: rshop/swoole:${{ env.BRANCH }}
       -
         name: Trigger pipeline rebuild
-        if: ${{ env.BRANCH == *-mssql }}
+        if: ${{ contains(env.BRANCH, 'mssql') && !contains(env.BRANCH, 'xdebug') }}
         uses: rshop/trigger-workflow-action@v1
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          repository: 'rshop/docker-php-apache'
-          workflowId: ${{ env.WORKFLOW_ID }}
+          repository: 'rshop/docker-pipeline'
+          workflowId: ${{ env.PIPELINE_WORFLOW_ID }}
           branch: ${{ env.BRANCH }}
