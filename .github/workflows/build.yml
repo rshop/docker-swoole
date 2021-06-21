@@ -39,7 +39,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          platforms: arm64
+          platforms: ${{ secrets.DOCKER_PLATFORMS }}
           push: true
           tags: rshop/swoole:${{ env.BRANCH }}
       -
