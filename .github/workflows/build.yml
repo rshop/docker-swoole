@@ -46,8 +46,8 @@ jobs:
         name: Create pipeline tag name
         id: pipeline-tag
         run: |
-          tag="${{ env.BRANCH }}".replace("-mssql", "")
-          echo "::set-output name=tag::$tag"
+          tag="${{ env.BRANCH }}"
+          echo "::set-output name=tag::${tag/-mssql/}"
       -
         name: Trigger pipeline rebuild
         if: ${{ contains(env.BRANCH, '-mssql') }}
