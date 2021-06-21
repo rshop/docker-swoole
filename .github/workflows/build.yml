@@ -1,14 +1,26 @@
 name: Build image and push to Docker Hub
 
-on:
-  push:
-    branches:
-      - '7.4'
+on: [push, workflow_dispatch, repository_dispatch]
+
+env:
+  BRANCH: '7.4'
+  PIPELINE_WORFLOW_ID: '8996686'
 
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ env.BRANCH }}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
       -
         name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -16,8 +28,26 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
+        name: Build latest
+        if: ${{ env.BRANCH == '7.3' }}
+        uses: docker/build-push-action@v2
+        with:
+          platforms: ${{ secrets.DOCKER_PLATFORMS }}
+          push: true
+          tags: rshop/swoole:latest
+      -
         name: Build and push
         uses: docker/build-push-action@v2
         with:
+          platforms: ${{ secrets.DOCKER_PLATFORMS }}
           push: true
-          tags: rshop/swoole:7.4
+          tags: rshop/swoole:${{ env.BRANCH }}
+      -
+        name: Trigger pipeline rebuild
+        if: ${{ contains(env.BRANCH, '-mssql') }}
+        uses: rshop/trigger-workflow-action@v1
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          repository: 'rshop/docker-pipeline'
+          workflowId: ${{ env.PIPELINE_WORFLOW_ID }}
+          branch: ${{ env.BRANCH }}
