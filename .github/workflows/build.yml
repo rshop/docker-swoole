@@ -43,6 +43,12 @@ jobs:
           push: true
           tags: rshop/swoole:${{ env.BRANCH }}
       -
+        name: Create pipeline tag name
+        id: pipeline-tag
+        run: |
+          tag="${{ env.BRANCH }}"
+          echo "::set-output name=tag::${tag/-mssql/}"
+      -
         name: Trigger pipeline rebuild
         if: ${{ contains(env.BRANCH, '-mssql') }}
         uses: rshop/trigger-workflow-action@v1
@@ -50,4 +56,4 @@ jobs:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           repository: 'rshop/docker-pipeline'
           workflowId: ${{ env.PIPELINE_WORFLOW_ID }}
-          branch: ${{ env.BRANCH }}
+          branch: ${{ steps.pipeline-tag.outputs.tag }}
