@@ -1,6 +1,6 @@
 FROM rshop/php:8.0
 
-ENV SWOOLE_VERSION v4.6.6
+ENV SWOOLE_VERSION v4.4.25
 
 RUN apk update \
     && apk add --no-cache \
