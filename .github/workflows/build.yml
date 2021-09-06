@@ -4,7 +4,7 @@ on: [push, workflow_dispatch, repository_dispatch]
 
 env:
   BRANCH: '7.3-mssql'
-  PIPELINE_WORFLOW_ID: '8996686'
+  PIPELINE_WORKFLOW_ID: '8996686'
 
 jobs:
   docker:
@@ -55,5 +55,5 @@ jobs:
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           repository: 'rshop/docker-pipeline'
-          workflowId: ${{ env.PIPELINE_WORFLOW_ID }}
+          workflowId: ${{ env.PIPELINE_WORKFLOW_ID }}
           branch: ${{ steps.pipeline-tag.outputs.tag }}
