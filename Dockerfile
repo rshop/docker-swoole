@@ -1,4 +1,4 @@
-FROM rshop/php:8.0-mssql
+FROM rshop/php:8.1-mssql
 
 ENV SWOOLE_VERSION v4.8.10
 
@@ -14,19 +14,19 @@ RUN apk update \
     && cd /tmp \
     && mkdir swoole \
     && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
-    && ln -s /usr/bin/phpize8 /usr/local/bin/phpize \
-    && ln -s /usr/bin/php-config8 /usr/local/bin/php-config \
+    && ln -s /usr/bin/phpize81 /usr/local/bin/phpize \
+    && ln -s /usr/bin/php-config81 /usr/local/bin/php-config \
     && ( \
         cd swoole \
         && phpize \
         && ./configure --enable-mysqlnd --enable-openssl --enable-http2 \
         && make -s -j$(nproc) && make install \
     ) \
-    && echo "extension=swoole.so" > /etc/php8/conf.d/50_swoole.ini \
+    && echo "extension=swoole.so" > /etc/php81/conf.d/50_swoole.ini \
     && apk del .build-deps \
     && apk del --purge *-dev \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/local/bin/php*
 
-COPY conf.d/* /etc/php8/conf.d/
+COPY conf.d/* /etc/php81/conf.d/
 
 EXPOSE 9501
