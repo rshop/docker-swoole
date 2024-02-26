@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build latest
-        if: ${{ github.ref_name == '8.3' }}
+        if: ${{ github.ref_name == '8.4' }}
         uses: docker/build-push-action@v6
         with:
           platforms: ${{ secrets.DOCKER_PLATFORMS }}
