@@ -3,7 +3,7 @@ name: Build image and push to Docker Hub
 on: [push, workflow_dispatch, repository_dispatch]
 
 env:
-  BRANCH: '8.1'
+  BRANCH: '8.2'
   PIPELINE_WORKFLOW_ID: '8996686'
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build latest
-        if: ${{ env.BRANCH == '7.4' }}
+        if: ${{ env.BRANCH == '8.2' }}
         uses: docker/build-push-action@v2
         with:
           platforms: ${{ secrets.DOCKER_PLATFORMS }}
