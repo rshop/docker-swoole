@@ -3,7 +3,7 @@ name: Build image and push to Docker Hub
 on: [push, workflow_dispatch, repository_dispatch]
 
 env:
-  BRANCH: '8.2'
+  BRANCH: '8.2-mssql'
   PIPELINE_WORKFLOW_ID: '8996686'
 
 jobs:
