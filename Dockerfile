@@ -1,4 +1,4 @@
-FROM rshop/php:8.3
+FROM rshop/php:8.3-mssql
 
 ENV SWOOLE_VERSION v4.8.10
 
