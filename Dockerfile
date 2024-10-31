@@ -1,12 +1,11 @@
 FROM rshop/php:8.4
 
-ENV SWOOLE_VERSION v5.1.5
+ENV SWOOLE_VERSION master
 
 RUN apk update \
     && apk add --no-cache \
         libstdc++ \
         openssl \
-        # brotli-dev \
     && apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         libaio-dev \
