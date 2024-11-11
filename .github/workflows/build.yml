@@ -1,10 +1,8 @@
 name: Build image and push to Docker Hub
 
-on: [push, workflow_dispatch, repository_dispatch]
-
-env:
-  BRANCH: '7.4'
-  PIPELINE_WORKFLOW_ID: '8996686'
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   docker:
@@ -12,48 +10,47 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
-          ref: ${{ env.BRANCH }}
+          ref: ${{ github.ref_name }}
       -
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
       -
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
       -
         name: Login to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Build latest
-        if: ${{ env.BRANCH == '8.3' }}
-        uses: docker/build-push-action@v2
+        if: ${{ github.ref_name == '8.3' }}
+        uses: docker/build-push-action@v6
         with:
           platforms: ${{ secrets.DOCKER_PLATFORMS }}
           push: true
           tags: rshop/swoole:latest
       -
         name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           platforms: ${{ secrets.DOCKER_PLATFORMS }}
           push: true
-          tags: rshop/swoole:${{ env.BRANCH }}
+          tags: rshop/swoole:${{ github.ref_name }}
       -
         name: Create pipeline tag name
         id: pipeline-tag
         run: |
-          tag="${{ env.BRANCH }}"
+          tag="${{ github.ref_name }}"
           echo "::set-output name=tag::${tag/-mssql/}"
       -
         name: Trigger pipeline rebuild
-        if: ${{ contains(env.BRANCH, '-mssql') }}
+        if: ${{ contains(github.ref_name, '-mssql') }}
         uses: rshop/trigger-workflow-action@v1
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           repository: 'rshop/docker-pipeline'
-          workflowId: ${{ env.PIPELINE_WORKFLOW_ID }}
           branch: ${{ steps.pipeline-tag.outputs.tag }}
