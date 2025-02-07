@@ -6,7 +6,6 @@ RUN apk update \
     && apk add --no-cache \
         libstdc++ \
         openssl \
-        brotli-dev \
     && apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         libaio-dev \
