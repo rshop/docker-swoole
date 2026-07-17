@@ -1,6 +1,6 @@
-FROM rshop/php:8.4
+FROM rshop/php:8.5
 
-ENV SWOOLE_VERSION v6.0.0
+ENV SWOOLE_VERSION v6.2.1
 
 RUN apk update \
     && apk add --no-cache \
@@ -14,19 +14,19 @@ RUN apk update \
     && cd /tmp \
     && mkdir swoole \
     && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
-    && ln -s /usr/bin/phpize84 /usr/local/bin/phpize \
-    && ln -s /usr/bin/php-config84 /usr/local/bin/php-config \
+    && ln -s /usr/bin/phpize85 /usr/local/bin/phpize \
+    && ln -s /usr/bin/php-config85 /usr/local/bin/php-config \
     && ( \
         cd swoole \
         && phpize \
         && ./configure --enable-mysqlnd --enable-openssl --enable-http2 \
         && make -s -j$(nproc) && make install \
     ) \
-    && echo "extension=swoole.so" > /etc/php84/conf.d/50_swoole.ini \
+    && echo "extension=swoole.so" > /etc/php85/conf.d/50_swoole.ini \
     && apk del .build-deps \
     && apk del --purge *-dev \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/local/bin/php*
 
-COPY conf.d/* /etc/php84/conf.d/
+COPY conf.d/* /etc/php85/conf.d/
 
 EXPOSE 9501
